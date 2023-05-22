@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sharifa</title>
+</head>
+<body>
+    <form id="assistanceForm">
+        <h2>form step 1</h2>
+        <label for="form" ></label><br><br>
+        <div>
+        <label for="entry">Entry:</label>
+        <input type="text" id="entryInput" placeholder="Enter directory id, description, and duration"><br><br>
+        <button type="button" onclick="addEntry()">Add Entry</button>
+        <button type="button" onclick="summary()">Summary</button>
+        </div> </form><br>
+    
+      <div id="entriesSection">
+        <h2>form step 2</h2>
+        <h3>Entries</h3>
+        <ul id="entriesList"></ul>
+      </div>
+    
+      <div id="summarySection">
+        <h2>form step 3</h2>
+        <h3>Summary</h3>
+        <p id="entryCount"></p>
+        <p id="sortedEntries"></p>
+      </div>
+    
+      <script>
+        const entries = [];
+    
+        function addEntry() {
+          const entryInput = document.getElementById('entryInput').value.trim();
+    
+          if (entryInput === '') {
+            alert('Invalid entry');
+            return;
+          }
+    
+          const entryValues = entryInput.split(',');
+    
+          if (entryValues.length !== 3) {
+            alert('Invalid entry');
+            return;
+          }
+    
+          const [directoryId, description, duration] = entryValues.map(value => value.trim());
+    
+          if (directoryId === '' || description === '' || duration === '') {
+            alert('Invalid entry');
+            return;
+          }
+    
+          entries.push({ directoryId, description, duration });
+    
+          const entriesList = document.getElementById('entriesList');
+          const entryItem = document.createElement('li');
+          entryItem.textContent = `${directoryId} ${description} ${duration}`;
+          entriesList.appendChild(entryItem);
+    
+          document.getElementById('entryInput').value = '';
+        }
+    
+        function summary() {
+          const sortedEntries = entries.slice().sort((a, b) => a.duration - b.duration);
+          const sortedEntryText = sortedEntries.map(entry => `${entry.directoryId} ${entry.description} ${entry.duration}`).join('');
+    
+          document.getElementById('entryCount').textContent = `Entry Count: ${entries.length}`;
+          document.getElementById('sortedEntries').textContent = sortedEntryText;
+        }
+      </script>
+    
+</body>
+</html>
